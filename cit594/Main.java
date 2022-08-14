@@ -146,14 +146,25 @@ public class Main {
 			
 		}
 		
-		/* initialize the processor */
+		/* initialize the processor and logger*/
+		Logger logger = Logger.configuration(filenames.get("log"));
+		String arguments = "";
+		for(int i = 0; i<args.length; i++) {
+			arguments = arguments+" " + args[i];
+		}
+		logger.write(arguments);
+		
 		Processor processor = new Processor(dataset);
 		processor.setPopReader(new PopulationReader(filenames.get("population")));
+		logger.write(filenames.get("population"));
 		processor.setCovidReader(new CovidReader(filenames.get("covid")));
+		logger.write(filenames.get("covid"));
 		PropertyProcessor prop_processor = new PropertyProcessor(new PropertiesReader(filenames.get("property")), new PopulationReader(filenames.get("population")));
+		logger.write(filenames.get("property"));
+		logger.write(filenames.get("population"));
 		
 		/* run the user interface function */
-		Ui ui = new Ui(processor,prop_processor);
+		Ui ui = new Ui(processor,prop_processor,logger);
 		
 		
 
