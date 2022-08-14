@@ -1,4 +1,4 @@
-ppackage edu.upenn.cit594.datamanagement;
+package edu.upenn.cit594.datamanagement;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -33,7 +33,8 @@ public class PopulationReader extends Reader{
 			     zip = zip.substring(1, last);
 			     int pop = Integer.parseInt(data[1]);
 			     Pops.add(new Population(zip,pop));
-			}	
+			}
+		    br.close();
 		}
 		catch(Exception e) {
 			throw new IllegalStateException(e);
