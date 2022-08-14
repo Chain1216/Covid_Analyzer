@@ -12,9 +12,11 @@ import java.util.regex.Pattern;
 import edu.upenn.cit594.datamanagement.CovidComparatorr;
 import edu.upenn.cit594.datamanagement.CovidReader;
 import edu.upenn.cit594.datamanagement.PopulationReader;
+import edu.upenn.cit594.datamanagement.PropertiesReader;
 import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.CheckExtension;
 import edu.upenn.cit594.processor.Processor;
+import edu.upenn.cit594.processor.PropertyProcessor;
 import edu.upenn.cit594.ui.Ui;
 
 public class Main {
@@ -31,7 +33,7 @@ public class Main {
 		properNames.add("population");
 		properNames.add("log");
 		properNames.add("covid");
-		properNames.add("properties");
+		properNames.add("property");
 		/* store the file name to read */
 		Map<String,String> filenames = new HashMap<String,String>();
 		/* store any input datasets into data management tire */
@@ -108,10 +110,10 @@ public class Main {
 				}
 			
 				
-                else if(m.group(1).equals("properties")) {
+                else if(m.group(1).equals("property")) {
                 	try {
 						File properties = new File(m.group(2));
-						filenames.put("properties", m.group(2));
+						filenames.put("property", m.group(2));
 						if(!properties.isFile()) {
 							System.out.println("The specified properties file does not exist");
 							return;
@@ -148,9 +150,10 @@ public class Main {
 		Processor processor = new Processor(dataset);
 		processor.setPopReader(new PopulationReader(filenames.get("population")));
 		processor.setCovidReader(new CovidReader(filenames.get("covid")));
+		PropertyProcessor prop_processor = new PropertyProcessor(new PropertiesReader(filenames.get("property")), new PopulationReader(filenames.get("population")));
 		
 		/* run the user interface function */
-		Ui ui = new Ui(processor);
+		Ui ui = new Ui(processor,prop_processor);
 		
 		
 
