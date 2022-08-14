@@ -40,8 +40,6 @@ public class Processor {
 		}
 		System.out.flush();
 		System.out.println("-----END OUTPUT-----");
-		System.out.println("                    ");
-		System.out.println("                    ");
 	}
 	
 	/* 2. Show the total population for all ZIP Codes (subsection 3.2). */
@@ -55,8 +53,6 @@ public class Processor {
 		System.out.println(total);
 		System.out.flush();
 		System.out.println("-----END OUTPUT-----");
-		System.out.println("                    ");
-		System.out.println("                    ");
 	}
 	
 	
