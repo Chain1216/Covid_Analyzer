@@ -14,6 +14,7 @@ import edu.upenn.cit594.datamanagement.PopulationReader;
 import edu.upenn.cit594.datamanagement.PropertiesReader;
 import edu.upenn.cit594.util.Covid;
 import edu.upenn.cit594.util.Population;
+import edu.upenn.cit594.util.Property;
 
 
 public class Processor {
@@ -37,6 +38,7 @@ public class Processor {
 		for(int i = 0; i < dataset.size(); i++) {
 			System.out.println(dataset.get(i));
 		}
+		System.out.flush();
 		System.out.println("-----END OUTPUT-----");
 		System.out.println("                    ");
 		System.out.println("                    ");
@@ -51,6 +53,7 @@ public class Processor {
 		}
 		System.out.println("-----BEGIN OUTPUT-----");
 		System.out.println(total);
+		System.out.flush();
 		System.out.println("-----END OUTPUT-----");
 		System.out.println("                    ");
 		System.out.println("                    ");
@@ -116,12 +119,74 @@ public class Processor {
 				}
 			}
 		}
+		System.out.flush();
 		System.out.println("-----END OUTPUT-----");
 		System.out.println("                    ");
 		System.out.println("                    ");
 		
 		
 	}
+	
+
+	
+	/*
+	 * return 0 if success, 1 if fail
+	 */
+	public int ratioOfMarketValueToVaccinated(String zip_code) {
+		
+		// get data
+		List<Population> pop_data = popReader.getAllpop();
+		List<Property> prop_data = proReader.getAllProperty();
+		List<Covid> covd_data;
+		
+		int fully_vacd = 0;
+		int pop = 0;
+		int fully_vacd_perCap = 0;
+		
+
+		if (CovidComparatorr.compare(covidReader.getFilename())) {
+			covd_data = covidReader.getAllcovid_csv();
+		} else {
+			covd_data = covidReader.getAllcovid_json();
+		}
+		
+		PropertyProcessor prop_processor = new PropertyProcessor(proReader,popReader);// 删end
+		
+		int avg_mkt_perCap = prop_processor.getTotalMarketValuePerCapita(zip_code);
+		
+		for (Covid cvd: covd_data) {
+			if(cvd.getZipCode().equals(zip_code)) {
+				fully_vacd = fully_vacd + cvd.getFully_vaccinated();
+			}
+		}
+		
+		if(fully_vacd == 0) { 
+			System.out.println("no one fully vaccinated in given zip code");
+			return (1);
+		}
+		
+		for(Population p: pop_data) {
+			if(p.getZip_code().equals(zip_code)) {
+				pop = pop + p.getPopulation();
+			}
+		}
+		
+		if(pop == 0) { 
+			System.out.println("no population in given zip code");
+			return (1);
+		}
+		
+		fully_vacd_perCap = (int)fully_vacd/pop;
+		int ratio = fully_vacd_perCap / avg_mkt_perCap;
+		
+		System.out.println("The ratio of Market Value per Capita to Fully Vaccinated per Capita is: "+
+		fully_vacd_perCap + " : " + avg_mkt_perCap + " = " + ratio);
+		
+		
+		return 0;
+	
+	}
+	
 	
 	/* methods to set Reader of input files*/
 	public void setPopReader(PopulationReader popReader) {
