@@ -55,7 +55,8 @@ public class CovidReader extends Reader{
 			     String time2 = time[0]; 
 			     time2 = time2.substring(1);
 			     covids.add(new Covid(zip,partial,fully,time2));
-			}	
+			}
+		    br.close();
 		}
 		catch(Exception e) {
 			throw new IllegalStateException(e);
