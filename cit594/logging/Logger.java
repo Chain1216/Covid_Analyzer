@@ -30,8 +30,8 @@ public class Logger {
     }
 	
 	
-	public void write (String state, String tweet) {
-		writer.println(state+"\t"+tweet);
+	public void write (String input) {
+		writer.println(input);
 	}
 	
 	/* singleton instance, only initialized at main runtime */
