@@ -7,10 +7,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import edu.upenn.cit594.util.Property;
 
-public class PropertiesReader extends Reader {
+public class PropertiesReader {
 
 	private String filename;
 
